@@ -6,11 +6,15 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "eslint app --ext ts,tsx,js,jsx --report-unused-disable-directives --max-warnings 0",
+    "lint:fix": "eslint app --ext js,jsx,ts,tsx --fix",
+    "format": "prettier --write 'app/**/*.{js,jsx,ts,tsx,css,html}'"
   },
   "dependencies": {
     "@clerk/nextjs": "^5.7.1",
     "@clerk/themes": "^2.1.35",
+    "@commitlint/cli": "^19.5.0",
+    "@commitlint/config-conventional": "^19.5.0",
     "@floating-ui/react-dom": "^2.1.2",
     "@lexical/react": "^0.16.1",
     "@liveblocks/client": "^2.8.2",
@@ -58,7 +62,13 @@
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged",
-      "pre-push" : "npm run lint && npm run format"
+      "pre-push": "npm run lint && npm run format"
     }
+  },
+  "lint-staged": {
+    "app/**/*.{ts,tsx,js,jsx}": [
+      "npm run lint",
+      "npm run format"
+    ]
   }
 }
