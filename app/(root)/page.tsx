@@ -1,34 +1,29 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-require-imports */
-/* eslint-disable react/jsx-no-undef */
-/* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-require('dotenv').config();
-import '../../app/globals.css';
 import AddDocumentBtn from '@/components/AddDocumentBtn';
+import { DeleteModal } from '@/components/DeleteModal';
 import Header from '@/components/Header'
+import Notifications from '@/components/Notifications';
+import { Button } from '@/components/ui/button'
 import { getDocuments } from '@/lib/actions/room.actions';
+import { dateConverter } from '@/lib/utils';
 import { SignedIn, UserButton } from '@clerk/nextjs'
 import { currentUser } from '@clerk/nextjs/server';
 import Image from 'next/image';
-import { redirect } from 'next/navigation';
-import React from 'react'
-import { metadata } from '../layout';
 import Link from 'next/link';
-import { dateConverter } from '@/lib/utils';
-import { DeleteModal } from '@/components/DeleteModal';
-import Notifications from '@/components/Notifications';
+import { redirect } from 'next/navigation';
 
 const Home = async () => {
   const clerkUser = await currentUser();
-  if (!clerkUser) redirect('/sign-in')
-  const roomDocuments = await getDocuments(clerkUser.emailAddresses[0].emailAddress)
+  if (!clerkUser) redirect('/sign-in');
+
+  const roomDocuments = await getDocuments(clerkUser.emailAddresses[0].emailAddress);
+
   return (
     <main className="home-container">
       <Header className="sticky left-0 top-0">
         <div className="flex items-center gap-2 lg:gap-4">
           <Notifications />
-
           <SignedIn>
             <UserButton />
           </SignedIn>
@@ -62,7 +57,6 @@ const Home = async () => {
                   </div>
                 </Link>
                 <DeleteModal roomId={id} />
-
               </li>
             ))}
           </ul>
